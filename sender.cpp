@@ -196,6 +196,21 @@ void send(const char* fileName)
 		/* TODO: Wait until the receiver sends us a message of type RECV_DONE_TYPE telling us 
  		 * that he finished saving the memory chunk. 
  		 */
+		 int retVal=msgrcv(msqid,&rcvMsg,sizeof(message)-sizeof(long),RECV_DONE_TYPE,0);
+		 /*--------------------------------------------------------------------------------------------
+		 This msgrcv() this will help us get the message out from the queue.This function has 5 arguments
+		 the 1st,2nd and the 3rd are similar to the above msgsnd() function,the fourth one is type 
+		 RECV_DONE_TYPE which is specified by professor.The last argument we just want to set it to 0
+		 because this project does not require any special option for flag parameter.
+		 --------------------------------------------------------------------------------------------*/
+		 //check for error of msgrcv()
+		 if(retVal==-1){
+			perror("msgrcv error from sender.cpp\n");
+			exit(EXIT_FAILURE);
+		 }
+		 else{
+			 printf("Message received.\n");
+		 }
 	}
 	
 
