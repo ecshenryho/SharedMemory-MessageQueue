@@ -218,7 +218,37 @@ void send(const char* fileName)
  	  * Lets tell the receiver that we have nothing more to send. We will do this by
  	  * sending a message of type SENDER_DATA_TYPE with size field set to 0. 	
 	  */
+	sndMsg.mtype=SENDER_DATA_TYPE;//set the message type to SENDER_DATA_TYPE as required
+	sndMsg.size=0;
+	printf("We are out of the loop,We have nothing to send.\n");
+	printf("This is an empty message.\n");
+	printf("Sending message...\n");
 
+	int val=msgsnd(msqid,&sndMsg,sizeof(message)-sizeof(long),0);
+	/*-----------------------------------------------------------------------------------------
+		This msgsnd() will pass information of message to a message queue. It has 4 arguments: 1st 
+		is the msqid returned by msgget(), 2nd one is the msgp is a pointer to the data we want to 
+		put on the queue, and it is a sndMsg in this case, 3rd is the msgsz is the size in bytes of 
+		the data(message) to add to the queue(not count the size of the mtype member).That is why
+		we have them subtract the sizeof(long) which is the size of mtype. The last argument is the 
+		msgflag which allows us to set some option flag parameters, but in this project we don't need
+		to, so we just set it to 0.
+	-------------------------------------------------------------------------------------------*/
+	printf("The size of sending message is: ");
+	printf("%d",sndMsg.size);
+	printf("\n");
+
+	printf("The type of sending message is: ");
+	printf("%ld",sndMsg.mtype);
+	printf("\n");
+	//check for error of msgsnd()
+	if(val==-1){
+		perror("msgsnd error from sender.cpp\n");
+		exit(EXIT_FAILURE);
+	}
+	else{
+		printf("Message has sent.\n");
+	}
 		
 	/* Close the file */
 	fclose(fp);
