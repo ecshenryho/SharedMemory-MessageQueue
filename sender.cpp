@@ -79,7 +79,21 @@ void init(int& shmid, int& msqid, void*& sharedMemPtr)
 	}
 	/* TODO: Attach to the message queue */
 	/* Store the IDs and the pointer to the shared memory region in the corresponding parameters */
-	
+	msqid=msgget(key,0666|IPC_CREAT);
+	/*-------------------------------------------------------------------------------------------
+	This msgget() system call returns the message queue ID on success, or -1 on failure.This one
+	will help to connect to the queue or create one if it doesn't exist.It has 2 parameters: 1st
+	one is the key which is a system-wide unique identifier describing the queue we want to 
+	connect or create, 2nd one is msgflg tells msgget() what to do. In this case we use 0666 for 
+	permission -rw-rw-rw and IPC_CREAT to create a queue and connect to it.0666 -rw-rw-rw because 
+	we are going to use msgrcv() and msgsnd()later and these function must have write and read 
+	permission on the message queue in order to send a message, and to receive a message freely.
+	-------------------------------------------------------------------------------------------*/
+	//check for error of msgget()
+	if(msqid==-1){
+		perror("msgget error from sender.\n ");
+		exit(1);
+	}
 }
 
 /**
