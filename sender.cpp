@@ -162,7 +162,37 @@ void send(const char* fileName)
 		/* TODO: Send a message to the receiver telling him that the data is ready 
  		 * (message of type SENDER_DATA_TYPE) 
  		 */
-		
+		sndMsg.mtype=SENDER_DATA_TYPE;//set the send message type to SENDER_DATA_TYPE
+		printf("The data is ready\n");
+		printf("Sending message in progress...\n");
+		printf("The size of sending message is: ");
+		printf("%d",sndMsg.size);
+		printf("\n");
+
+		printf("The type of sending message is: ");
+		printf("%ld",sndMsg.mtype);
+		printf("\n");
+
+		printf("Receiving message in progress...\n");
+
+		int returnValue=msgsnd(msqid,&sndMsg,sizeof(message)-sizeof(long),0);
+		/*-----------------------------------------------------------------------------------------
+		This msgsnd() will pass information of message to a message queue. It has 4 arguments: 1st 
+		is the msqid returned by msgget(), 2nd one is the msgp is a pointer to the data we want to 
+		put on the queue, and it is a sndMsg in this case, 3rd is the msgsz is the size in bytes of 
+		the data(message) to add to the queue(not count the size of the mtype member).That is why
+		we have them subtract the sizeof(long) which is the size of mtype. The last argument is the 
+		msgflag which allows us to set some option flag parameters, but in this project we don't need
+		to, so we just set it to 0.
+		-------------------------------------------------------------------------------------------*/
+		//check for error of msgsnd()
+		if(returnValue==-1){
+			perror("msgsnd error from sender.cpp");
+			exit(EXIT_FAILURE);
+		}
+		else{
+			printf("Message has sent.\n");
+		}
 		/* TODO: Wait until the receiver sends us a message of type RECV_DONE_TYPE telling us 
  		 * that he finished saving the memory chunk. 
  		 */
