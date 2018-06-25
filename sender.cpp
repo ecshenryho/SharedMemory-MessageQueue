@@ -34,8 +34,18 @@ void init(int& shmid, int& msqid, void*& sharedMemPtr)
 		    is unique system-wide among all SYstem V objects. Two objects, on the other hand,
 		    may have the same key.
 	 */
-	
-
+	key_t key;
+	key=ftok("keyfile.txt",'a');
+	/*-------------------------------------------------------------------------------------
+	This function has 2 arguments. It uses the file name and the least significant 8 bits of
+	proj_id (whic must be nonzero) to generate a key_t type System V IPC key, suitable for use
+	with msgget(), semget(), or shmget().
+	----------------------------------------------------------------------------------------*/
+	//check for error of ftok()
+	if(key==-1){
+		perror("ftok error from sender\n");
+		exit(EXIT_FAILURE);
+	}
 	
 	/* TODO: Get the id of the shared memory segment. The size of the segment must be SHARED_MEMORY_CHUNK_SIZE */
 	/* TODO: Attach to the shared memory */
