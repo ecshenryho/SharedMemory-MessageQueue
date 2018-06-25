@@ -1,1 +1,82 @@
-# SharedMemory-MessageQueue
+					Summer 2018 
+					Operating system : 351-01
+					Assignment #1
+
+I.Group members:
+
+	1.	Henry Ho
+		714-688-6858
+		vho23@csu.fullerton.edu
+		Last 4 CWID: 1548
+
+		
+	2.	David Luong
+		714-613-3616
+		Davidluong18@csu.fullerton.edu
+		Last 4 CWID: 5577
+
+		
+	3.	Xiaomei Ji
+		310-880-0312
+		xiaomeiji@csu.fullerton.edu
+		Last 4 CWID: 5214
+
+II.Program languages used: c++, recommend linux computer 64 bits architechure.
+
+III.Implemented the extra credit? No
+
+IV.How to execute:
+
+	1. Download the file p1-hhenry.tar
+
+	2. Open terminal, from there navigate to the directory where p1-hhenry.tar
+	   has been downloaded.You also can open that folder and then right click
+	   select open terminal.
+
+	3. Type this command on the terminal above: tar -xvf p1-hhenry.tar
+	   This will extract the file to the current directory.
+
+	4. Use terminal to navigate to the directory name p1-hhenry
+	   from the directory you have just extracted above or just use the mouse
+	   to open it by double click on it.
+
+	5. When you are in the p1-hhenry directory, compile all the code using Makefile
+	   type this command and hit enter: 
+				               make
+
+	6. Run the sender process using command and hit enter:
+	                 ./sender keyfile.txt
+
+	7. After step 6 the sender process will lock the terminal and waiting for 
+	   the receiver process to take action, so we have to Open another terminal
+           in the same directory to run the receiver process. 
+	   Using command:
+				./recv
+
+	8. After running receiver executable, both process will be finished
+	   and we can check in that folder to find a recvfile file. This file
+	   should contain: Hello world
+
+	9.You're done! 
+
+V.p1-henry.tar contains:
+
+	1-	keyfile.txt
+	2-	msg.h
+	3-	Makefile
+	4-	README
+	5-	recv.cpp
+	6-	sender.cpp
+	7-	screenShotSampleRun.png
+	8-	Assignment1.pdf
+	9-	Design.pdf
+
+	*Note: after running the program the 1st time. The recvfile will be created.
+         If you want to run it second time, you can delete it because it will be made.	
+
+VI.Collaboration: 
+
+	We don't separate the work for each team member, instead we sat down and did the coding together, step by step. We went over each fucntion that we used and try to understand 	them. We also explain what it does for everyone in our team, make sure everyone will 	understand the problems and how all the functions work, understand the purpose of this 	assignment.
+
+
+
