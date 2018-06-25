@@ -106,6 +106,20 @@ void init(int& shmid, int& msqid, void*& sharedMemPtr)
 void cleanUp(const int& shmid, const int& msqid, void* sharedMemPtr)
 {
 	/* TODO: Detach from shared memory */
+	//To detach from shared memory we only need to use
+	// shmdt()with a single parameter
+	int val1=shmdt(sharedMemPtr);
+	/*---------------------------------------------------------------------------------------------
+	When we are done with the shared memory segment,our program use this function to detach itself 
+	from shared memory. This one only have one argument which is shmaddr, it is the address we got 
+	from shmat() above, and it is sharedMemPtr. The functions returns -1 on error, 0 on success.
+	----------------------------------------------------------------------------------------------*/
+	//check for error of shmdt()
+	if(val1==-1){
+		perror("shmdt error from receiver.\n");
+		exit(EXIT_FAILURE);
+	}
+	printf("Finished detaching from shared memory from sender.\n");
 }
 
 /**
