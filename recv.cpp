@@ -54,6 +54,19 @@ void init(int& shmid, int& msqid, void*& sharedMemPtr)
 	}
 
 	/* TODO: Allocate a piece of shared memory. The size of the segment must be SHARED_MEMORY_CHUNK_SIZE. */
+	shmid=shmget(key,SHARED_MEMORY_CHUNK_SIZE,0666);
+	/*-------------------------------------------------------------------------------------
+	This shmget() function is used to allocate a System V shared memory segment
+	This function has 3 parameters: the key, the size of the segment, and the semflg.
+	The semflg argument tell the shmget() which permission will be and specify if
+	we want to create a new one or use the existing one. In this case we don't want to 
+	create one, so no need to use IPC_CREAT, only need to specify 666 permission only.
+	--------------------------------------------------------------------------------------*/
+	//check for error of shmget()
+	if(shmid==-1){
+		perror("shmget error from receiver.cpp\n");
+		exit(EXIT_FAILURE);
+	}
 	/* TODO: Attach to the shared memory */
 	/* TODO: Create a message queue */
 	/* Store the IDs and the pointer to the shared memory region in the corresponding parameters */
