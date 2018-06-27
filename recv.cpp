@@ -68,6 +68,21 @@ void init(int& shmid, int& msqid, void*& sharedMemPtr)
 		exit(EXIT_FAILURE);
 	}
 	/* TODO: Attach to the shared memory */
+	sharedMemPtr=shmat(shmid,(void *)0,0);
+	/*----------------------------------------------------------------------------------------
+	This shmat() is used to get the pointer from the shmid handle in order to
+	attache to the shared memory. This function has 3 parameters: the 1st is the shared id we 
+	from the call to shmget() above, the 2nd is shmaddr which is specific address to use but 
+	we can just set it to 0 and let the OS choose the address for us, the 3rd parameter is 
+	shmflg which can be set to SHM_RDONLY if you want to read from it, or set to 0 otherwise.
+	-----------------------------------------------------------------------------------------*/
+	//check for error of shmat()
+	if(sharedMemPtr==(void *)(-1))
+	{
+		perror("shmat error from receiver.cpp\n");//shmat() return -1 on failure so
+		//if it does we use perror to display a message error
+		exit(EXIT_FAILURE);//and exit the program.
+	}
 	/* TODO: Create a message queue */
 	/* Store the IDs and the pointer to the shared memory region in the corresponding parameters */
 	
