@@ -135,9 +135,28 @@ void mainLoop()
 	/* Keep receiving until the sender set the size to 0, indicating that
  	 * there is no more data to send
  	 */	
-
+	message sndMsg;
+	message rcvMsg;
+	msgSize=rcvMsg.size;//set the message size
 	while(msgSize != 0)
 	{	
+		int valtemp=msgrcv(msqid,&rcvMsg,sizeof(message)-sizeof(long),SENDER_DATA_TYPE,0);
+		 /*--------------------------------------------------------------------------------------------
+		 This msgrcv() this will help us get the message out from the queue.This function has 5 arguments
+		 the 1st,2nd and the 3rd are similar to the msgsnd() function in sender.cpp,the fourth one is type 
+		 RECV_DONE_TYPE which is specified by professor.The last argument we just want to set it to 0
+		 because this project does not require any special option for flag parameter.
+		 --------------------------------------------------------------------------------------------*/
+		//check for error of msgrcv()
+		if(valtemp==-1){
+			perror("msgrcv error in receiver.cpp");
+			exit(1);
+		}
+		 else{
+			 printf("Message received.\n");
+		 }
+		 //get the message size
+		 msgSize=rcvMsg.size;
 		/* If the sender is not telling us that we are done, then get to work */
 		if(msgSize != 0)
 		{
@@ -151,6 +170,25 @@ void mainLoop()
  			 * I.e. send a message of type RECV_DONE_TYPE (the value of size field
  			 * does not matter in this case). 
  			 */
+			 sndMsg.mtype=RECV_DONE_TYPE;
+			int val3=msgsnd(msqid,&sndMsg,sizeof(message)-sizeof(long),0);
+			/*-----------------------------------------------------------------------------------------
+			This msgsnd() will pass information of message to a message queue. It has 4 arguments: 1st 
+			is the msqid returned by msgget(), 2nd one is the msgp is a pointer to the data we want to 
+			put on the queue, and it is a sndMsg in this case, 3rd is the msgsz is the size in bytes of 
+			the data(message) to add to the queue(not count the size of the mtype member).That is why
+			we have them subtract the sizeof(long) which is the size of mtype. The last argument is the 
+			msgflag which allows us to set some option flag parameters, but in this project we don't need
+			to, so we just set it to 0.
+			-------------------------------------------------------------------------------------------*/
+			//check for error of msgsnd()
+			if(val3==-1){
+				perror("msgsnd error from receiver.cpp\n");
+				exit(EXIT_FAILURE);
+			}
+			else{
+				printf("Message has sent.\n");
+			}
 		}
 		/* We are done */
 		else
