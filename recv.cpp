@@ -211,10 +211,28 @@ void mainLoop()
 void cleanUp(const int& shmid, const int& msqid, void* sharedMemPtr)
 {
 	/* TODO: Detach from shared memory */
-	
+	shmdt(sharedMemPtr);
+	/*---------------------------------------------------------------------------------------------
+	When we are done with the shared memory segment,our program use this function to detach itself 
+	from shared memory. This one only have one argument which is shmaddr, it is the address we got 
+	from shmat() above, and it is sharedMemPtr. The functions returns -1 on error, 0 on success.
+	----------------------------------------------------------------------------------------------*/
+	printf("Finished detaching from shared memory.\n");
 	/* TODO: Deallocate the shared memory chunk */
-	
+	shmctl(shmid,IPC_RMID,0);
+	/*---------------------------------------------------------------------------------------------
+	Simple because when you detach from the segment, the shared memory being detached but it isn't
+	destroyed. So we have to use shmctl() to completely deallocate the shared memory segment.
+	----------------------------------------------------------------------------------------------*/
+	printf("Finished deallocating the share memory chunk.\n");
 	/* TODO: Deallocate the message queue */
+	msgctl(msqid,IPC_RMID,0);
+	/*---------------------------------------------------------------------------------------------
+	There is a case when we destroy a message queue. They will stick around until we explicitly 
+	remove them. So if we don't want to waste the system resources, we use msgctl() with the msqid 
+	which is the queue id obtained from msgget(), and IPC_RMID is used to remove the message queue
+	----------------------------------------------------------------------------------------------*/
+	printf("Finished deallocating the message queue.\n");
 }
 
 /**
